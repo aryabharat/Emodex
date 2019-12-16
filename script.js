@@ -6,6 +6,7 @@ let data = [0, 0, 0, 0, 0, 0, 0];
 let labels = ["HAPPY", "SAD", "ANGRY", "FEARFUL", "DISGUSTED", "SURPRISED", 'NEUTRAL'];
 let gameLabel = [];
 let gameEmotion = [];
+let avgScore = 0;
 
 function startVideo() {
     navigator.mediaDevices.getUserMedia(
@@ -71,6 +72,7 @@ async function stopStreamedVideo(video) {
     return 1;
 }
 
+avgScore = 6.7;
 // document.onkeydown = function (evt) {
 //   evt = evt || window.event;
 //   if (evt.keyCode == 27) {
@@ -88,14 +90,18 @@ async function stopStreamedVideo(video) {
 function showAnalysis() {
     stopStreamedVideo(video);
     //   window.open ('report.html','_self',false)
-    document.getElementById('reportHeading').style.display= 'block';
+    document.getElementById('reportHeading').style.display = 'block';
     document.getElementById('mainCanvas').remove();
     renderChart(data, labels);
     circleGraph(data, labels);
-    gameChart(gameScore,gameLabel);
+    gameChart(gameScore, gameLabel);
+    const sum = gameScore.reduce((a, b) => a + b, 0);
+    const avg = (sum / gameScore.length) || 0;
+    let conclusion = "Average score is " + avgScore + " your avg score is " + avg;
+    document.getElementById('conclusion').style.display = "block";
+     document.getElementById('conclusion').innerHTML = conclusion;
 }
-function gameChart(data,label)
-{
+function gameChart(data, label) {
     var ctx = document.getElementById("gameChart");
     ctx.style.display = 'block';
     var myChart = new Chart(ctx, {
@@ -381,16 +387,19 @@ function removeInteger(x) {
 
         // --------------------
         let x1 = document.getElementById('timer').innerHTML;
-            x1--;
+        x1--;
         document.getElementById('timer').innerHTML = x1;
+
+
         // Autophagy death and game score updated
         for (var i = 1; i < snake.length; i++) {
             if ((snake[0].x == snake[i].x && snake[0].y == snake[i].y) || x1 < 1) {
                 showScreen(3);
                 gameScore.push(score);
-                gameLabel.push("game "+ gameScore.length +" ");
+                gameLabel.push("game " + gameScore.length + " ");
                 let temp = data.indexOf(Math.max(...data));
                 gameEmotion.push(labels[temp]);
+                avgScore = (avgScore+score)/(gameScore.length+5);
                 snake_speed = 40;
                 return;
             }
@@ -431,7 +440,7 @@ function removeInteger(x) {
 
         // Debug
         //document.getElementById("debug").innerHTML = snake_dir + " " + snake_next_dir + " " + snake[0].x + " " + snake[0].y;    
-       
+
         //   console.log(document.getElementById('timer').innerHTML);
         setTimeout(mainLoop, snake_speed);
     }
@@ -442,7 +451,7 @@ function removeInteger(x) {
         document.getElementById('timer').innerHTML = 300;
         showScreen(0);
         screen_snake.focus();
-       
+
         snake = [];
         for (var i = 4; i >= 0; i--) {
             snake.push({

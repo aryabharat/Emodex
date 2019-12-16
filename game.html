@@ -217,13 +217,13 @@
 <body>
     <header class="wrap">
         <h1>Snake</h1>
-        <h1 id="timer">301</h1>
+        <h1>Timer:</h1> <h1 id="timer">301</h1>
     </header>
     <div class="container">
         <div class="row">
             <div class="col">
 
-                <button onclick="showAnalysis()">Analysis</button>
+                <button class="btn btn-primary" onclick="showAnalysis()">Analysis</button>
                 
             </div>
             <div>
@@ -232,7 +232,7 @@
         </div>
         <div class="row">
             <div class="col">
-                <canvas class="wrap" id="snake" width="320" height="320" tabindex="1"></canvas>
+                <canvas class="wrap" id="snake" width="520" height="520" tabindex="1"></canvas>
 
                 <!-- Game Over Screen -->
                 <div id="gameover">
@@ -275,6 +275,7 @@
             </div>
         </div>
         <h2 id="reportHeading" align="center" style="padding: 20px;; display: none;">EMODEX GAME ANALYSIS</h2>
+        <h3 id="conclusion"  style="display: none; text-align: center;"></h3>
         <div class="row">
             <div class="col-2">
             </div>
@@ -306,7 +307,7 @@
     </div>
     <video id="video" width="350" height="450" autoplay muted></video>
 
-
+    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript">
 
