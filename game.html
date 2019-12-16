@@ -1,0 +1,315 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Snake</title>
+    <script defer src="face-api.min.js"></script>
+    <script defer src="script.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+    </script>
+    <style type="text/css">
+        @import url("https://fonts.googleapis.com/css?family=VT323");
+
+        ::selection {
+            color: #FFFFFF;
+            background: transparent;
+        }
+
+        ::-moz-selection {
+            color: #FFFFFF;
+            background: transparent;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: "VT323";
+        }
+
+        /* body {
+            /* background-color: #000000; */
+        /* } */
+
+        */ .wrap {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .wrap {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        header {
+            width: 340px;
+            font-size: 0;
+        }
+
+        canvas.wrap {
+            display: none;
+            border-style: solid;
+            border-width: 10px;
+            border-color: black;
+        }
+
+        canvas:focus {
+            outline: none;
+        }
+
+        #video {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+        }
+
+        #mainCanvas {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+        }
+
+        /* Top Styles */
+        h1 {
+            display: inline-block;
+            width: 100px;
+            font-size: 32px;
+            color: black;
+        }
+
+        .score {
+            display: inline-block;
+            width: 240px;
+            font-size: 20px;
+            color: black;
+            text-align: right;
+        }
+
+        .score_value {
+            font-size: inherit;
+        }
+
+
+
+        /* All screens style */
+        #gameover a,
+        #setting a,
+        #menu a {
+            display: block;
+        }
+
+        #gameover a,
+        #setting a:hover,
+        #menu a:hover {
+            cursor: pointer;
+        }
+
+        #gameover a:hover::before,
+        #setting a:hover::before,
+        #menu a:hover::before {
+            content: ">";
+            margin-right: 10px;
+        }
+
+        /* Menu Screen Style */
+        #menu {
+            display: block;
+            width: 340px;
+            padding-top: 95px;
+            padding-bottom: 95px;
+            font-size: 40px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            color: black;
+        }
+
+        #menu h2 {
+            -webkit-animation: logo-ani 1000ms linear infinite;
+            animation: logo-ani 1000ms linear infinite;
+            margin-bottom: 30px;
+
+        }
+
+        #menu a {
+            font-size: 30px;
+        }
+
+        @-webkit-keyframes logo-ani {
+            50% {
+                -webkit-transform: scale(1.3, 1.3);
+            }
+
+            100% {
+                -webkit-transform: scale(1.0, 1.0);
+            }
+        }
+
+        @keyframes logo-ani {
+            50% {
+                transform: scale(1.3, 1.3);
+            }
+
+            100% {
+                transform: scale(1.0, 1.0);
+            }
+        }
+
+
+        /* Game Over Screen Style */
+
+        #gameover {
+            display: none;
+            width: 340px;
+            padding-top: 95px;
+            padding-bottom: 95px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            font-size: 30px;
+            color: black;
+        }
+
+        #gameover p {
+            margin-top: 25px;
+            font-size: 20px;
+        }
+
+        /* Settings Screen Style */
+        #setting {
+            display: none;
+            width: 340px;
+            margin-left: auto;
+            margin-right: auto;
+            padding-top: 85px;
+            padding-bottom: 85px;
+            font-size: 30px;
+            color: black;
+            text-align: center;
+        }
+
+        #setting h2 {
+            margin-bottom: 15px;
+        }
+
+        #setting p {
+            margin-top: 10px;
+        }
+
+        #setting input {
+            display: none;
+        }
+
+        #setting label {
+            cursor: pointer;
+        }
+
+        #setting input:checked+label {
+            background-color: #FFF;
+            color: black;
+        }
+    </style>
+
+<body>
+    <header class="wrap">
+        <h1>Snake</h1>
+        <h1 id="timer">301</h1>
+    </header>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+
+                <button onclick="showAnalysis()">Analysis</button>
+                
+            </div>
+            <div>
+                    <h1 class="score">Score: <span id="score_value">0</span></h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <canvas class="wrap" id="snake" width="320" height="320" tabindex="1"></canvas>
+
+                <!-- Game Over Screen -->
+                <div id="gameover">
+                    <h2>Game Over</h2>
+                    <!-- <p>press <span style="background-color: #FFFFFF; color: #000000">space</span> to begin a</p> -->
+                    <a id="newgame_gameover">new game</a>
+                    <a id="setting_gameover"></a>
+                </div>
+
+                <!-- Setting screen -->
+                <div id="setting">
+                    <h2>Settings</h2>
+
+                    <a id="newgame_setting">new game</a>
+
+                    <p>Speed:
+                        <input id="speed1" type="radio" name="speed" value="120" checked />
+                        <label for="speed1">Slow</label>
+                        <input id="speed2" type="radio" name="speed" value="75" />
+                        <label for="speed2">Normal</label>
+                        <input id="speed3" type="radio" name="speed" value="35" />
+                        <label for="speed3">Fast</label>
+                    </p>
+
+                    <!-- <p>Wall:
+                                    <input id="wallon" type="radio" name="wall" value="1" checked/>
+                                    <label for="wallon">On</label>
+                                    <input id="walloff" type="radio" name="wall" value="0"/>
+                                    <label for="walloff">Off</label>
+                                </p> -->
+                </div>
+
+                <!-- Main Menu Screen -->
+                <div id="menu">
+                    <h2>Snake</h2>
+                    <a id="newgame_menu">new game</a>
+                    <!-- <a id="setting_menu">settings</a> -->
+                </div>
+
+            </div>
+        </div>
+        <h2 id="reportHeading" align="center" style="padding: 20px;; display: none;">EMODEX GAME ANALYSIS</h2>
+        <div class="row">
+            <div class="col-2">
+            </div>
+            <div class="col-6">
+                <canvas id="myChart" width="700" height="700" style="display: none;"></canvas>
+            </div>
+            <div class="col-3">
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+            </div>
+            <div class="col-6">
+                <canvas id="circleChart" width="700" height="700" style="display: none;"></canvas>
+            </div>
+            <div class="col-3">
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-2">
+                </div>
+                <div class="col-6">
+                    <canvas id="gameChart" width="700" height="700" style="display: none;"></canvas>
+                </div>
+                <div class="col-3">
+                </div>
+            </div>
+    </div>
+    <video id="video" width="350" height="450" autoplay muted></video>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    </script>
+
+</body>
