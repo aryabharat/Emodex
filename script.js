@@ -109,7 +109,7 @@ function gameChart(data, label) {
         data: {
             labels: label,
             datasets: [{
-                label: '# of Tomatoes',
+                label: '# Score Graph',
                 data: data,
                 backgroundColor: [
                     'rgba(54, 162, 235, 0.2)',
@@ -146,7 +146,7 @@ function renderChart(data, label) {
         data: {
             labels: label,
             datasets: [{
-                label: '# of Tomatoes',
+                label: '# Emotion Quotient Graph',
                 data: data,
                 backgroundColor: [
                     'rgba(54, 162, 235, 0.2)',
@@ -184,7 +184,7 @@ function circleGraph(data, label) {
         data: {
             labels: label,
             datasets: [{
-                label: '# of Tomatoes',
+                label: '# Radar Graph',
                 data: data,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',
